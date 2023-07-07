@@ -38,11 +38,11 @@ func SetContextTimeout(timeout time.Duration) {
 	unoconvert.SetContextTimeout(timeout)
 }
 
-func Run(infile string, outfile string, opts ...string) error {
+func Run(infile string, outfile string, opts ...UnoconvertOption) error {
 	return unoconvert.Run(infile, outfile, opts...)
 }
 
-func RunContext(ctx context.Context, infile string, outfile string, opts ...string) error {
+func RunContext(ctx context.Context, infile string, outfile string, opts ...UnoconvertOption) error {
 	return unoconvert.RunContext(ctx, infile, outfile, opts...)
 }
 
@@ -68,7 +68,7 @@ func (u *Unoconvert) SetContextTimeout(timeout time.Duration) {
 	ContextTimeout = timeout
 }
 
-func (u *Unoconvert) Run(infile string, outfile string, opts ...string) error {
+func (u *Unoconvert) Run(infile string, outfile string, opts ...UnoconvertOption) error {
 	var args = []string{}
 
 	connections := []string{
@@ -79,7 +79,10 @@ func (u *Unoconvert) Run(infile string, outfile string, opts ...string) error {
 	files := []string{infile, outfile}
 
 	args = append(connections, files...)
-	args = append(args, opts...)
+
+	for _, opt := range opts {
+		args = append(args, fmt.Sprintf("%s=%s", opt.Key, opt.Value))
+	}
 
 	log.Printf("Command: %s %s", u.Executable, args)
 	cmd := exec.Command(u.Executable, args...)
@@ -87,7 +90,7 @@ func (u *Unoconvert) Run(infile string, outfile string, opts ...string) error {
 	return cmd.Run()
 }
 
-func (u *Unoconvert) RunContext(ctx context.Context, infile string, outfile string, opts ...string) error {
+func (u *Unoconvert) RunContext(ctx context.Context, infile string, outfile string, opts ...UnoconvertOption) error {
 	ctx, cancel := context.WithTimeout(ctx, ContextTimeout)
 	defer cancel()
 
@@ -101,7 +104,10 @@ func (u *Unoconvert) RunContext(ctx context.Context, infile string, outfile stri
 	files := []string{infile, outfile}
 
 	args = append(connections, files...)
-	args = append(args, opts...)
+
+	for _, opt := range opts {
+		args = append(args, fmt.Sprintf("%s=%s", opt.Key, opt.Value))
+	}
 
 	log.Printf("Command: %s %s", u.Executable, args)
 
