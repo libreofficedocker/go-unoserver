@@ -29,7 +29,7 @@ var (
 var unoserver = &Unoserver{
 	Host:       "127.0.0.1",
 	Port:       "2002",
-	Executable: "libreoffice",
+	Executable: DefaultLibreOfficeExecutable,
 }
 
 func New() *Unoserver {
