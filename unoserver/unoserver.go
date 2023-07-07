@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
-	"strings"
 	"time"
 )
 
@@ -92,11 +91,7 @@ func (u *Unoserver) SetPort(port string) {
 }
 
 func (u *Unoserver) SetUserInstallation(userInstallation string) {
-	if !strings.Contains(userInstallation, "file://") {
-		u.UserInstallation = fmt.Sprintf("file://%s", userInstallation)
-	}
-
-	u.UserInstallation = userInstallation
+	u.UserInstallation = fmt.Sprintf("file://%s", userInstallation)
 }
 
 func (u *Unoserver) SetContextTimeout(timeout time.Duration) {
