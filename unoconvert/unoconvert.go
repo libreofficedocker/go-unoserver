@@ -38,12 +38,12 @@ func SetContextTimeout(timeout time.Duration) {
 	unoconvert.SetContextTimeout(timeout)
 }
 
-func Run(infile string, outfile string, opts ...UnoconvertOption) error {
-	return unoconvert.Run(infile, outfile, opts...)
+func Create(infile string, outfile string, opts ...UnoconvertOption) *exec.Cmd {
+	return unoconvert.Create(infile, outfile, opts...)
 }
 
-func RunContext(ctx context.Context, infile string, outfile string, opts ...UnoconvertOption) error {
-	return unoconvert.RunContext(ctx, infile, outfile, opts...)
+func CreateContext(ctx context.Context, infile string, outfile string, opts ...UnoconvertOption) *exec.Cmd {
+	return unoconvert.CreateContext(ctx, infile, outfile, opts...)
 }
 
 type Unoconvert struct {
@@ -68,7 +68,7 @@ func (u *Unoconvert) SetContextTimeout(timeout time.Duration) {
 	ContextTimeout = timeout
 }
 
-func (u *Unoconvert) Run(infile string, outfile string, opts ...UnoconvertOption) error {
+func (u *Unoconvert) Create(infile string, outfile string, opts ...UnoconvertOption) *exec.Cmd {
 	var args = []string{}
 
 	connections := []string{
@@ -86,11 +86,10 @@ func (u *Unoconvert) Run(infile string, outfile string, opts ...UnoconvertOption
 
 	log.Printf("Command: %s %s", u.Executable, args)
 	cmd := exec.Command(u.Executable, args...)
-
-	return cmd.Run()
+	return cmd
 }
 
-func (u *Unoconvert) RunContext(ctx context.Context, infile string, outfile string, opts ...UnoconvertOption) error {
+func (u *Unoconvert) CreateContext(ctx context.Context, infile string, outfile string, opts ...UnoconvertOption) *exec.Cmd {
 	ctx, cancel := context.WithTimeout(ctx, ContextTimeout)
 	defer cancel()
 
@@ -110,7 +109,6 @@ func (u *Unoconvert) RunContext(ctx context.Context, infile string, outfile stri
 	}
 
 	log.Printf("Command: %s %s", u.Executable, args)
-
 	cmd := exec.CommandContext(ctx, u.Executable, args...)
-	return cmd.Run()
+	return cmd
 }
