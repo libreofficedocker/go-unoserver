@@ -3,8 +3,8 @@ package unoserver
 import (
 	"context"
 	"fmt"
-	"log"
 	"os/exec"
+	"strings"
 	"time"
 )
 
@@ -36,6 +36,14 @@ func New() *Unoserver {
 	return &Unoserver{}
 }
 
+func Default() *Unoserver {
+	return &Unoserver{
+		Host:       "127.0.0.1",
+		Port:       "2002",
+		Executable: DefaultLibreOfficeExecutable,
+	}
+}
+
 func SetExecutable(executable string) {
 	unoserver.SetExecutable(executable)
 }
@@ -46,6 +54,10 @@ func SetInterface(host string) {
 
 func SetPort(port string) {
 	unoserver.SetPort(port)
+}
+
+func SetUserInstallation(userInstallation string) {
+	unoserver.SetUserInstallation(userInstallation)
 }
 
 func SetContextTimeout(timeout time.Duration) {
@@ -79,6 +91,14 @@ func (u *Unoserver) SetPort(port string) {
 	u.Port = port
 }
 
+func (u *Unoserver) SetUserInstallation(userInstallation string) {
+	if !strings.Contains(userInstallation, "file://") {
+		u.UserInstallation = fmt.Sprintf("file://%s", userInstallation)
+	}
+
+	u.UserInstallation = userInstallation
+}
+
 func (u *Unoserver) SetContextTimeout(timeout time.Duration) {
 	ContextTimeout = timeout
 }
@@ -98,8 +118,6 @@ func (u *Unoserver) Command(opts ...string) *exec.Cmd {
 	if u.UserInstallation != "" {
 		args = append(args, fmt.Sprintf("-env:UserInstallation=%s", u.UserInstallation))
 	}
-
-	log.Println("Running: ", u.Executable, args)
 
 	cmd := exec.Command(u.Executable, args...)
 
@@ -121,8 +139,6 @@ func (u *Unoserver) CommandContext(ctx context.Context, opts ...string) *exec.Cm
 	if u.UserInstallation != "" {
 		args = append(args, fmt.Sprintf("-env:UserInstallation=%s", u.UserInstallation))
 	}
-
-	log.Println("Running: ", u.Executable, args)
 
 	cmd := exec.CommandContext(ctx, u.Executable, args...)
 
