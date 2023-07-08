@@ -4,15 +4,9 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
-	"time"
 )
 
 var (
-	DefaultContextTimeout = 0 * time.Minute
-)
-
-var (
-	ContextTimeout       = DefaultContextTimeout
 	OoSetupConnectionURL = "socket,host=%s,port=%s,tcpNoDelay=1;urp;StarOffice.ComponentContext"
 	OoSetupFlags         = []string{
 		"--headless",
@@ -59,10 +53,6 @@ func SetUserInstallation(userInstallation string) {
 	unoserver.SetUserInstallation(userInstallation)
 }
 
-func SetContextTimeout(timeout time.Duration) {
-	unoserver.SetContextTimeout(timeout)
-}
-
 func Command(opts ...string) *exec.Cmd {
 	return unoserver.Command(opts...)
 }
@@ -92,10 +82,6 @@ func (u *Unoserver) SetPort(port string) {
 
 func (u *Unoserver) SetUserInstallation(userInstallation string) {
 	u.UserInstallation = fmt.Sprintf("file://%s", userInstallation)
-}
-
-func (u *Unoserver) SetContextTimeout(timeout time.Duration) {
-	ContextTimeout = timeout
 }
 
 func (u *Unoserver) Command(opts ...string) *exec.Cmd {
