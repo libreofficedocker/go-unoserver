@@ -1,2 +1,2 @@
 # go-unoserver
-A Go wrapper implementation for unoserver 
+A Go implementation for unoserver 
