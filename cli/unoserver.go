@@ -39,7 +39,7 @@ func main() {
 			Email: "https://github.com/libreofficedocker/unoserver-rest-api",
 		},
 	}
-	app.Action = mainAction
+	app.Action = action
 
 	if err := app.Run(os.Args); err != nil {
 		log.Println(err)
@@ -47,7 +47,7 @@ func main() {
 	}
 }
 
-func mainAction(c *cli.Context) error {
+func action(c *cli.Context) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
