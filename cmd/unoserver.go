@@ -21,7 +21,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = Name
 	app.Version = Version
-	app.Usage = "Libreoffice unoserver implemented in Go"
+	app.Usage = "A Go implementation for unoserver"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "addr",
