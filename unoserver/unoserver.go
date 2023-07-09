@@ -41,8 +41,8 @@ func SetExecutable(executable string) {
 	unoserver.SetExecutable(executable)
 }
 
-func SetInterface(host string) {
-	unoserver.SetInterface(host)
+func SetHost(host string) {
+	unoserver.SetHost(host)
 }
 
 func SetPort(port string) {
@@ -72,7 +72,7 @@ func (u *Unoserver) SetExecutable(executable string) {
 	u.Executable = executable
 }
 
-func (u *Unoserver) SetInterface(host string) {
+func (u *Unoserver) SetHost(host string) {
 	u.Host = host
 }
 
