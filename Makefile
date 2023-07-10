@@ -4,11 +4,16 @@ it:
 run:
 	go run cli/unoserver.go
 
-build: bin/unoserver
-
-bin/unoserver:
-	GOOS=linux go build -o build/unoserver-linux cli/unoserver.go
-	GOOS=darwin go build -o build/unoserver-darwin cli/unoserver.go
+build:
+	$(call build,linux)
+	$(call build,darwin)
 
 clean:
-	rm bin/* | true
+	rm build/* | true
+
+# define a reusable recipe
+define build
+	@echo "Building for $(1)..."
+	CGO_ENABLED=0 GOOS=$(1) \
+		go build -o build/unoserver-$(1) cli/unoserver.go
+endef
