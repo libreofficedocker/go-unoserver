@@ -19,12 +19,6 @@ var (
 	}
 )
 
-var unoserver = &Unoserver{
-	Host:       "127.0.0.1",
-	Port:       "2002",
-	Executable: DefaultLibreOfficeExecutable,
-}
-
 func New() *Unoserver {
 	return &Unoserver{}
 }
@@ -35,30 +29,6 @@ func Default() *Unoserver {
 		Port:       "2002",
 		Executable: DefaultLibreOfficeExecutable,
 	}
-}
-
-func SetExecutable(executable string) {
-	unoserver.SetExecutable(executable)
-}
-
-func SetHost(host string) {
-	unoserver.SetHost(host)
-}
-
-func SetPort(port string) {
-	unoserver.SetPort(port)
-}
-
-func SetUserInstallation(userInstallation string) {
-	unoserver.SetUserInstallation(userInstallation)
-}
-
-func Command(opts ...string) *exec.Cmd {
-	return unoserver.Command(opts...)
-}
-
-func CommandContext(ctx context.Context, opts ...string) *exec.Cmd {
-	return unoserver.CommandContext(ctx, opts...)
 }
 
 type Unoserver struct {
