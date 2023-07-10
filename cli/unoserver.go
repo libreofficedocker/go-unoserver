@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -40,7 +41,7 @@ func main() {
 	app.Action = action
 
 	// Set log prefix
-	log.SetPrefix(app.Name + ": ")
+	log.SetPrefix(fmt.Sprintf("[%s]: ", app.Name))
 
 	if err := app.Run(os.Args); err != nil {
 		log.Println(err)
