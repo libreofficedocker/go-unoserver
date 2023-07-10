@@ -10,16 +10,10 @@ import (
 	"github.com/urfave/cli"
 )
 
-var Name = "unoserver"
 var Version = "0.0.0"
-
-func init() {
-	log.SetPrefix(Name + ": ")
-}
 
 func main() {
 	app := cli.NewApp()
-	app.Name = Name
 	app.Version = Version
 	app.Usage = "A Go implementation for unoserver"
 	app.Flags = []cli.Flag{
@@ -44,6 +38,9 @@ func main() {
 		},
 	}
 	app.Action = action
+
+	// Set log prefix
+	log.SetPrefix(app.Name + ": ")
 
 	if err := app.Run(os.Args); err != nil {
 		log.Println(err)
