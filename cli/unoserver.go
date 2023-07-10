@@ -40,7 +40,7 @@ func main() {
 	app.Authors = []cli.Author{
 		{
 			Name:  "libreofficedocker",
-			Email: "https://github.com/libreofficedocker/go-unoserver",
+			Email: "https://github.com/libreofficedocker",
 		},
 	}
 	app.Action = action
