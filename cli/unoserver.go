@@ -54,7 +54,7 @@ func action(c *cli.Context) error {
 	host, port, err := net.SplitHostPort(c.String("addr"))
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	server := unoserver.Default()
