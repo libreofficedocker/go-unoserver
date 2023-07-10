@@ -28,6 +28,10 @@ func main() {
 			Value: "127.0.0.1:2002",
 			Usage: "The addr used by the unoserver api server",
 		},
+		cli.StringFlag{
+			Name:  "user-installation",
+			Usage: "The path to the user installation directory. If not specified, the default user installation will be used.",
+		},
 		cli.BoolFlag{
 			Name:  "daemon",
 			Usage: "Run as daemon",
@@ -52,7 +56,6 @@ func action(c *cli.Context) error {
 	defer cancel()
 
 	host, port, err := net.SplitHostPort(c.String("addr"))
-
 	if err != nil {
 		return err
 	}
@@ -60,6 +63,11 @@ func action(c *cli.Context) error {
 	server := unoserver.Default()
 	server.Host = host
 	server.Port = port
+
+	userInstallation := c.String("user-installation")
+	if userInstallation != "" {
+		server.SetUserInstallation(userInstallation)
+	}
 
 	cmd := server.CommandContext(ctx)
 
