@@ -1,3 +1,5 @@
+BUILD_DIR := build
+
 it:
 	go mod tidy
 
@@ -9,11 +11,11 @@ build:
 	$(call build,darwin)
 
 clean:
-	rm build/* | true
+	rm -rf $(BUILD_DIR) | true
 
 # define a reusable recipe
 define build
 	@echo "Building for $(1)..."
 	CGO_ENABLED=0 GOOS=$(1) \
-		go build -o build/unoserver-$(1) cli/unoserver.go
+		go build -o $(BUILD_DIR)/unoserver-$(1) cli/unoserver.go
 endef
