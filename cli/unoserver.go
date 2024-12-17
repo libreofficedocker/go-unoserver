@@ -53,17 +53,18 @@ func action(c *cli.Context) error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	host, port, err := net.SplitHostPort(c.String("addr"))
-	if err != nil {
-		return err
+	server := unoserver.Default()
+
+	if host, port, err := net.SplitHostPort(c.String("addr")); err == nil {
+		server.Host = host
+		server.Port = port
 	}
 
-	server := unoserver.Default()
-	server.Host = host
-	server.Port = port
+	log.Print("Starting unoserver at ", server.Host, ":", server.Port)
 
 	userInstallation := c.String("user-installation")
 	if userInstallation != "" {
+		log.Print("Using user installation: ", userInstallation)
 		server.SetUserInstallation(userInstallation)
 	}
 
